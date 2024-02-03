@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgallien <rgallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:49:31 by rgallien          #+#    #+#             */
-/*   Updated: 2024/01/10 00:26:08 by rgallien         ###   ########.fr       */
+/*   Updated: 2024/01/10 00:19:46 by rgallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*fill_ligne(char	*tmp)
 {
@@ -77,19 +77,19 @@ char	*read_fd(char	*stash, int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	stash[BUFFER_SIZE + 1] = {'\0'};
+	static char	stash[1024][BUFFER_SIZE + 1] = {{'\0'}};
 	char		*ligne;
 	char		*tmp;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	tmp = read_fd(stash, fd);
-	if (!stash[0])
+	tmp = read_fd(stash[fd], fd);
+	if (!stash[fd][0])
 	{
 		free(tmp);
 		return (NULL);
 	}
 	ligne = fill_ligne(tmp);
-	shift_stash(stash);
+	shift_stash(stash[fd]);
 	return (ligne);
 }
